@@ -1,0 +1,67 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "API de Gerenciamento de Tarefas",
+  "dateExport": "2024-03-30T00:00:00.000Z",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Requisições",
+      "requests": [
+        {
+          "name": "GET - Informações da API",
+          "method": "GET",
+          "url": "http://127.0.0.1:8000/",
+          "description": "Retorna informações sobre os endpoints disponíveis"
+        },
+        {
+          "name": "POST - Adicionar Tarefa 1",
+          "method": "POST",
+          "url": "http://127.0.0.1:8000/tarefas",
+          "description": "Adiciona uma nova tarefa",
+          "body": {
+            "nome": "Estudar FastAPI",
+            "descricao": "Aprender conceitos de FastAPI e criar uma API REST"
+          }
+        },
+        {
+          "name": "POST - Adicionar Tarefa 2",
+          "method": "POST",
+          "url": "http://127.0.0.1:8000/tarefas",
+          "description": "Adiciona uma segunda tarefa",
+          "body": {
+            "nome": "Fazer exercícios",
+            "descricao": "Praticar programação em Python"
+          }
+        },
+        {
+          "name": "POST - Adicionar Tarefa 3",
+          "method": "POST",
+          "url": "http://127.0.0.1:8000/tarefas",
+          "description": "Adiciona uma terceira tarefa",
+          "body": {
+            "nome": "Comprar leite",
+            "descricao": "Ir ao mercado e comprar leite integral"
+          }
+        },
+        {
+          "name": "GET - Listar todas as Tarefas",
+          "method": "GET",
+          "url": "http://127.0.0.1:8000/tarefas",
+          "description": "Retorna a lista de todas as tarefas cadastradas"
+        },
+        {
+          "name": "PUT - Marcar Tarefa como Concluída",
+          "method": "PUT",
+          "url": "http://127.0.0.1:8000/tarefas/Estudar%20FastAPI",
+          "description": "Marca a tarefa como concluída (observe %20 para espaço)"
+        },
+        {
+          "name": "DELETE - Remover Tarefa",
+          "method": "DELETE",
+          "url": "http://127.0.0.1:8000/tarefas/Fazer%20exercícios",
+          "description": "Remove a tarefa especificada"
+        }
+      ]
+    }
+  ]
+}
