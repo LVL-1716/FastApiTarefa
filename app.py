@@ -4,23 +4,18 @@ from pydantic import BaseModel
 # Inicializar a aplicação FastAPI
 app = FastAPI()
 
-# Definir modelo para requisição de tarefa (POST)
-class TarefaCreate(BaseModel):
+# Definir modelo para tarefa
+class Tarefa(BaseModel):
     nome: str
     descricao: str
-
-# Definir modelo para resposta de tarefa
-class TarefaResponse(BaseModel):
-    nome: str
-    descricao: str
-    concluida: bool
+    concluida: bool = False
 
 # Lista de tarefas (banco de dados em memória)
 tarefas = []
 
 # ROTA 1: Adicionar uma nova tarefa (POST)
 @app.post("/tarefas", response_model=dict)
-def adicionar_tarefa(tarefa: TarefaCreate):
+def adicionar_tarefa(tarefa: Tarefa):
     """
     Adiciona uma nova tarefa à lista.
     
@@ -30,16 +25,11 @@ def adicionar_tarefa(tarefa: TarefaCreate):
     Returns:
         Dicionário com a tarefa adicionada
     """
-    nova_tarefa = {
-        "nome": tarefa.nome,
-        "descricao": tarefa.descricao,
-        "concluida": False
-    }
-    tarefas.append(nova_tarefa)
-    return {"mensagem": "Tarefa adicionada com sucesso!", "tarefa": nova_tarefa}
+    tarefas.append(tarefa)
+    return {"mensagem": "Tarefa adicionada com sucesso!", "tarefa": tarefa}
 
 # ROTA 2: Listar todas as tarefas (GET)
-@app.get("/tarefas", response_model=list)
+@app.get("/tarefas", response_model=list[Tarefa])
 def listar_tarefas():
     """
     Retorna a lista de todas as tarefas cadastradas.
@@ -65,8 +55,8 @@ def marcar_concluida(nome_tarefa: str):
         HTTPException: Se a tarefa não for encontrada
     """
     for tarefa in tarefas:
-        if tarefa["nome"].lower() == nome_tarefa.lower():
-            tarefa["concluida"] = True
+        if tarefa.nome.lower() == nome_tarefa.lower():
+            tarefa.concluida = True
             return {"mensagem": "Tarefa marcada como concluída!", "tarefa": tarefa}
     
     raise HTTPException(status_code=404, detail=f"Tarefa '{nome_tarefa}' não encontrada")
@@ -87,7 +77,7 @@ def remover_tarefa(nome_tarefa: str):
         HTTPException: Se a tarefa não for encontrada
     """
     for i, tarefa in enumerate(tarefas):
-        if tarefa["nome"].lower() == nome_tarefa.lower():
+        if tarefa.nome.lower() == nome_tarefa.lower():
             tarefa_removida = tarefas.pop(i)
             return {"mensagem": "Tarefa removida com sucesso!", "tarefa": tarefa_removida}
     
