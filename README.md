@@ -33,6 +33,17 @@ uvicorn app:app --reload
 
 ## Endpoints (Rotas)
 
+## Autenticação Básica
+Todos os endpoints relacionados a `/tarefas` exigem autenticação básica.
+
+- Usuário: `usuario`
+- Senha: `senha123`
+
+Exemplo com `curl`:
+```bash
+curl -u usuario:senha123 http://127.0.0.1:8000/tarefas
+```
+
 ### 1. GET / - Raiz da API
 **Descrição:** Retorna informações sobre os endpoints disponíveis.
 
@@ -61,10 +72,13 @@ GET http://127.0.0.1:8000/
 
 **Descrição:** Adiciona uma nova tarefa com nome e descrição.
 
+**Autenticação:** Basic Auth com usuário `usuario` e senha `senha123`.
+
 **Requisição:**
 ```
 POST http://127.0.0.1:8000/tarefas
 Content-Type: application/json
+Authorization: Basic <token>
 
 {
   "nome": "Estudar FastAPI",
@@ -88,11 +102,21 @@ Content-Type: application/json
 
 ### 3. GET /tarefas - Listar Todas as Tarefas
 
-**Descrição:** Retorna a lista de todas as tarefas cadastradas.
+**Descrição:** Retorna a lista de todas as tarefas cadastradas, com suporte a paginação e ordenação.
 
 **Requisição:**
 ```
 GET http://127.0.0.1:8000/tarefas
+```
+
+**Parâmetros opcionais:**
+- `page`: número da página (padrão: `1`)
+- `size`: número de itens por página (padrão: `10`)
+- `sort_by`: campo para ordenar os resultados (`nome` ou `descricao`)
+
+**Exemplo de paginação e ordenação:**
+```
+GET http://127.0.0.1:8000/tarefas?page=1&size=2&sort_by=nome
 ```
 
 **Resposta (200 OK):**
@@ -117,9 +141,12 @@ GET http://127.0.0.1:8000/tarefas
 
 **Descrição:** Marca uma tarefa específica como concluída.
 
+**Autenticação:** Basic Auth com usuário `usuario` e senha `senha123`.
+
 **Requisição:**
 ```
 PUT http://127.0.0.1:8000/tarefas/Estudar%20FastAPI
+Authorization: Basic <token>
 ```
 
 **Obs:** O nome da tarefa deve ser URL encoded (espaços substituídos por %20).
@@ -149,9 +176,12 @@ PUT http://127.0.0.1:8000/tarefas/Estudar%20FastAPI
 
 **Descrição:** Remove uma tarefa específica da lista.
 
+**Autenticação:** Basic Auth com usuário `usuario` e senha `senha123`.
+
 **Requisição:**
 ```
 DELETE http://127.0.0.1:8000/tarefas/Estudar%20FastAPI
+Authorization: Basic <token>
 ```
 
 **Resposta (200 OK):**
